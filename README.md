@@ -9,6 +9,8 @@ Mock animator controller for controlling the avatar's facial expressions.
 
 Except for EmockMenuItem, it is not recommended for users to configure this plugin's components directly. Instead, use external tools to configure them automatically.
 
+- [lilEmo](https://github.com/lilxyzw/lilEmo)
+
 ## Design
 
 - Complex conditional branching and input operations that determine which animation to play are handled exclusively by the avatar owner. (`EmockController`)
