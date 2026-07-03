@@ -1,0 +1,23 @@
+{
+    "name": "jp.lilxyzw.emock",
+    "rootNamespace": "jp.lilxyzw.emock",
+    "references": [
+        "Unity.Collections",
+        "Unity.Burst",
+        "Unity.InputSystem",
+        "BasisSDK",
+        "Basis Framework",
+        "BasisNetworkCore",
+        "BasisSettings",
+        "HVR.Basis.Comms"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
