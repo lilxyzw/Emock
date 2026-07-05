@@ -7,9 +7,9 @@ namespace jp.lilxyzw.emock
 {
     internal static class EmockSettings
     {
-        public static BasisSettingsBinding<bool> ChangeByTrackpad = new("change by trackpad", new BasisPlatformDefault<bool>(true));
-        public static BasisSettingsBinding<bool> ResetUponMoving = new("reset upon moving", new BasisPlatformDefault<bool>(false));
-        public static BasisSettingsBinding<float> StopDistance = new("stop distance", new BasisPlatformDefault<float>(50));
+        public static BasisSettingsBinding<bool> ChangeByTrackpad = new("emock: change by trackpad", new BasisPlatformDefault<bool>(true));
+        public static BasisSettingsBinding<bool> ResetUponMoving = new("emock: reset upon moving", new BasisPlatformDefault<bool>(false));
+        public static BasisSettingsBinding<float> StopDistance = new("emock: stop distance", new BasisPlatformDefault<float>(50));
 
         public static void LoadAll()
         {
@@ -53,6 +53,7 @@ namespace jp.lilxyzw.emock
         private static void Initialize()
         {
             SettingsProvider.ExternalTabs.Add(("Emock", EmockTab));
+            BasisSettingsSystem.OnSettingsFinishedChanges += LoadAll;
         }
     }
 }

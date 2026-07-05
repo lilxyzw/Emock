@@ -1,6 +1,6 @@
 {
   "name": "jp.lilxyzw.emock",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "Emock",
   "description": "Mock animator controller for controlling the avatar's facial expressions.",
   "license": "MIT"
