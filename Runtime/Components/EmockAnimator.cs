@@ -5,11 +5,12 @@ using Basis.Scripts.BasisSdk.Players;
 using Basis.Scripts.Networking.Receivers;
 using Basis.Scripts.Networking;
 using HVR.Basis.Comms;
+using jp.lilxyzw.basispatcher;
 
 namespace jp.lilxyzw.emock
 {
     [AddComponentMenu("Emock/Emock Animator")]
-    public class EmockAnimator : MonoBehaviour, IEmockAvatarLoad
+    public class EmockAnimator : MonoBehaviour, IEmockAvatarLoad, IManagedLateUpdate
     {
         public EmockClip[] clips = {};
         private ushort m_Index = 0;
@@ -56,7 +57,7 @@ namespace jp.lilxyzw.emock
 
             #if UNITY_EDITOR
             isOwner = true;
-            EmockManager.animators.Add(this);
+            IManagedLateUpdate.Add(this);
             if (Application.platform == RuntimePlatform.WindowsEditor ||
                 Application.platform == RuntimePlatform.LinuxEditor ||
                 Application.platform == RuntimePlatform.OSXEditor) return;
@@ -80,7 +81,7 @@ namespace jp.lilxyzw.emock
 
         public void OnAvatarReady(BasisAvatar avatar, bool IsOwner)
         {
-            EmockManager.animators.Add(this);
+            IManagedLateUpdate.Add(this);
             root = avatar.transform;
             faceTrackingActivityRelay = GetComponentInParent<FaceTrackingActivityRelay>(true);
             isOwner = IsOwner;
@@ -125,7 +126,7 @@ namespace jp.lilxyzw.emock
             SetLipSync(true);
             SetEyeTracking(true);
             interpolator?.Dispose();
-            EmockManager.animators.Remove(this);
+            IManagedLateUpdate.Remove(this);
         }
 
         private void SetBlink(bool enable)

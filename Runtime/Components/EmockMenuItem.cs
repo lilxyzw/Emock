@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Basis.Scripts.BasisSdk;
-using Basis.Scripts.BasisSdk.Players;
-using HVR.Basis.Comms;
+using jp.lilxyzw.basispatcher;
 using UnityEngine;
 
 namespace jp.lilxyzw.emock
@@ -29,10 +28,17 @@ namespace jp.lilxyzw.emock
                     Debug.LogError("EmockMenuItem: EmockController not found.");
                     Destroy(this);
                 }
-                this.value = defaultValue;
-                var key = GetKey();
-                if (string.IsNullOrEmpty(key) || !HVRVixxyPersistentStore.TryGet($"emock.grobal:{parameter}", out var value)) return;
-                this.value = value;
+                value = defaultValue;
+                if (saveType == SaveType.None) return;
+                if (saveType == SaveType.Avatar)
+                {
+                    value = AvatarSettings.Get("emock", parameter, defaultValue);
+                }
+                else if (saveType == SaveType.Global)
+                {
+                    value = AvatarSettings.GetGlobal("emock", parameter, defaultValue);
+                }
+
                 if (controller) controller.SetParameter(parameter, value);
             }
             else Destroy(this);
@@ -44,9 +50,14 @@ namespace jp.lilxyzw.emock
         {
             this.value = value;
             if (controller) controller.SetParameter(parameter, value);
-            var key = GetKey();
-            if (string.IsNullOrEmpty(key)) return;
-            HVRVixxyPersistentStore.Set(key, value, defaultValue);
+            if (saveType == SaveType.Avatar)
+            {
+                AvatarSettings.Set("emock", parameter, value, defaultValue);
+            }
+            else if (saveType == SaveType.Global)
+            {
+                AvatarSettings.SetGlobal("emock", parameter, value, defaultValue);
+            }
         }
 
         public void ApplyValue(string choice) => ApplyValue(selections.IndexOf(choice));
@@ -54,23 +65,6 @@ namespace jp.lilxyzw.emock
         public void ApplyValue(bool value) => ApplyValue(value ? 1f : 0f);
 
         public float GetValue() => value;
-
-        private string GetKey()
-        {
-            if (saveType == SaveType.None)
-            {
-                return null;
-            }
-            else if (saveType == SaveType.Avatar)
-            {
-                if (string.IsNullOrEmpty(BasisLocalPlayer.CurrentAvatarUniqueID)) return null;
-                return $"emock.parameter:{BasisLocalPlayer.CurrentAvatarUniqueID}|{parameter}";
-            }
-            else
-            {
-                return $"emock.parameter:{parameter}";
-            }
-        }
     }
 
     public enum SaveType

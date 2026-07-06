@@ -9,7 +9,8 @@
         "Basis Framework",
         "BasisNetworkCore",
         "BasisSettings",
-        "HVR.Basis.Comms"
+        "HVR.Basis.Comms",
+        "jp.lilxyzw.basispatcher"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

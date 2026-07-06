@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Basis.Scripts.BasisSdk;
+using jp.lilxyzw.basispatcher;
 using UnityEngine;
 
 namespace jp.lilxyzw.emock
@@ -8,7 +9,7 @@ namespace jp.lilxyzw.emock
     // This component functions only for the avatar owner.
     // It determines the animation index based on player input and transmits that value over the network.
     [AddComponentMenu("Emock/Emock Controller")]
-    public class EmockController : MonoBehaviour, IEmockAvatarLoad
+    public class EmockController : MonoBehaviour, IEmockAvatarLoad, IManagedUpdate
     {
         public EmockNetwork emockNetwork;
         public EmockStateGroup[] groups = {};
@@ -33,6 +34,9 @@ namespace jp.lilxyzw.emock
         private void Awake()
         {
             #if UNITY_EDITOR
+            isInitialized = true;
+            IManagedUpdate.Add(this);
+            EmockInputManager.Initialize(this);
             if (Application.platform == RuntimePlatform.WindowsEditor ||
                 Application.platform == RuntimePlatform.LinuxEditor ||
                 Application.platform == RuntimePlatform.OSXEditor) return;
@@ -47,12 +51,7 @@ namespace jp.lilxyzw.emock
         }
 
         #if UNITY_EDITOR
-        public void Update()
-        {
-            isInitialized = true;
-            EmockInputManager.Initialize(this);
-            ManagedUpdate();
-        }
+        public void Update() => EmockInputManager.Initialize(this);
         #endif
 
         public void ManagedUpdate()
@@ -107,10 +106,15 @@ namespace jp.lilxyzw.emock
             if (IsOwner)
             {
                 isInitialized = true;
-                EmockManager.controller = this;
+                IManagedUpdate.Add(this);
                 EmockInputManager.Initialize(this);
             }
             else Destroy(this);
+        }
+
+        private void OnDestroy()
+        {
+            IManagedUpdate.Remove(this);
         }
     }
 

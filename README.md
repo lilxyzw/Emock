@@ -19,51 +19,9 @@ Except for EmockMenuItem, it is not recommended for users to configure this plug
 - The component plays a specific single animation based on the index. (`EmockAnimator`)
 - Animation interpolation and fading are performed using Burst for each avatar, and the determined values ​​are applied to the avatar. (`EmockInterpolator`)
 
-## Editing the framework
+## Install
 
-### `com.basis.sdk/Settings/AvatarContentPoliceSelector.asset`
-
-- jp.lilxyzw.emock.EmockAnimator
-- jp.lilxyzw.emock.EmockController
-- jp.lilxyzw.emock.EmockMenuItem
-- jp.lilxyzw.emock.EmockNetwork
-
-### `com.basis.eventdriver/BasisEventDriver.asmdef`
-
-```json
-{
-    ...
-    "references": [
-        ...
-        "jp.lilxyzw.emock"
-    ],
-    ...
-}
-```
-
-### `com.basis.eventdriver/BasisEventDriver.cs`
-
-```C#
-        private void UpdateBody()
-        {
-			...
-
-			// Add this
-            jp.lilxyzw.emock.EmockManager.Update();
-
-			...
-		}
-
-        private void LateUpdateBody()
-        {
-			...
-
-			// Add this
-            jp.lilxyzw.emock.EmockManager.LateUpdate();
-
-			...
-		}
-```
+Running `Tools/lilBasisPatcher/Add Emock Components` makes the components available for use on the avatar.
 
 ## Make Emock compatible with Cilbox
 
@@ -113,10 +71,6 @@ Except for EmockMenuItem, it is not recommended for users to configure this plug
 </linker>
 ```
 
-### Client settings
+## Client settings
 
 Installing this plugin adds a new item to the settings.
-
-- Change By Trackpad: Whether to enable changing facial expressions using the trackpad.
-- Reset Upon Moving: Resets the avatar's facial expression when moving. This setting is primarily for Vive Controllers.
-- Stop Distance: The animation stops if the avatar is further away than this distance.

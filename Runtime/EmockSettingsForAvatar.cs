@@ -22,7 +22,7 @@ namespace jp.lilxyzw.emock
             if (menuItems.Length <= 0) return;
 
             var menuGroup = PanelElementDescriptor.CreateNew(PanelElementDescriptor.ElementStyles.Group, container);
-            menuGroup.SetTitle("Emock");
+            menuGroup.SetTitle("settings.jp.lilxyzw.emock");
 
             foreach (var menuItem in menuItems)
             {
@@ -66,8 +66,8 @@ namespace jp.lilxyzw.emock
             if (menuItems.Any(m => m.selections != null && m.selections.Count > 1))
             {
                 var buttonReset = PanelButton.CreateNew(menuGroup.ContentParent);
-                buttonReset.Descriptor.SetTitle("Reset to Default");
-                buttonReset.Descriptor.SetDescription("Resets all avatar parameters to their initial values.");
+                buttonReset.Descriptor.SetTitle(BasisLocalization.Get("settings.jp.lilxyzw.emock.resettodefault"));
+                buttonReset.Descriptor.SetDescription(BasisLocalization.Get("settings.jp.lilxyzw.emock.resettodefault.tooltips"));
                 buttonReset.OnClicked += () =>
                 {
                     foreach (var menuItem in menuItems)

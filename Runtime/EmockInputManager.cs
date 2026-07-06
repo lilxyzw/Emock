@@ -75,12 +75,12 @@ namespace jp.lilxyzw.emock
 
         private static void SetLeft(float value)
         {
-            if (EmockSettings.ChangeByTrackpad.RawValue && controller) controller.SetParameter("LeftHand", value);
+            if (EmockSettings.ChangeByController.RawValue && controller) controller.SetParameter("LeftHand", value);
         }
 
         private static void SetRight(float value)
         {
-            if (EmockSettings.ChangeByTrackpad.RawValue && controller) controller.SetParameter("RightHand", value);
+            if (EmockSettings.ChangeByController.RawValue && controller) controller.SetParameter("RightHand", value);
         }
 
         private static void ResetLeft()

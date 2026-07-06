@@ -7,53 +7,46 @@ namespace jp.lilxyzw.emock
 {
     internal static class EmockSettings
     {
-        public static BasisSettingsBinding<bool> ChangeByTrackpad = new("emock: change by trackpad", new BasisPlatformDefault<bool>(true));
+        public static BasisSettingsBinding<bool> ChangeByController = new("emock: change by controller", new BasisPlatformDefault<bool>(true));
         public static BasisSettingsBinding<bool> ResetUponMoving = new("emock: reset upon moving", new BasisPlatformDefault<bool>(false));
         public static BasisSettingsBinding<float> StopDistance = new("emock: stop distance", new BasisPlatformDefault<float>(50));
 
         public static void LoadAll()
         {
-            ChangeByTrackpad.LoadBindingValue();
+            ChangeByController.LoadBindingValue();
             ResetUponMoving.LoadBindingValue();
             StopDistance.LoadBindingValue();
         }
 
-        private static PanelTabPage EmockTab(PanelTabGroup tabGroup)
+        private static void EmockTab(RectTransform container)
         {
-            PanelTabPage tab = PanelTabPage.CreateVertical(tabGroup.Descriptor.ContentParent);
-            PanelElementDescriptor descriptor = tab.Descriptor;
-            descriptor.SetTitle("Emock");
+            PanelSectionToggleHelpers.CreateCollapsibleFlatSection(container,
+                BasisLocalization.Get("settings.jp.lilxyzw.emock"), () =>
+            {
+                PanelToggle toggleChangeByController = PanelToggle.CreateNewEntry(container);
+                toggleChangeByController.Descriptor.SetTitle(BasisLocalization.Get("settings.jp.lilxyzw.emock.changebycontroller"));
+                toggleChangeByController.Descriptor.SetTooltip(BasisLocalization.Get("settings.jp.lilxyzw.emock.changebycontroller.tooltips"));
+                toggleChangeByController.AssignBinding(ChangeByController);
 
-            RectTransform container = descriptor.ContentParent;
+                PanelToggle toggleResetUponMoving = PanelToggle.CreateNewEntry(container);
+                toggleResetUponMoving.Descriptor.SetTitle(BasisLocalization.Get("settings.jp.lilxyzw.emock.resetuponmoving"));
+                toggleResetUponMoving.Descriptor.SetTooltip(BasisLocalization.Get("settings.jp.lilxyzw.emock.resetuponmoving.tooltips"));
+                toggleResetUponMoving.AssignBinding(ResetUponMoving);
 
-            PanelElementDescriptor group = PanelElementDescriptor.CreateNew(PanelElementDescriptor.ElementStyles.Group, container);
-            group.SetTitle("Emock");
-
-            PanelToggle toggleChangeByTrackpad = PanelToggle.CreateNewEntry(group);
-            toggleChangeByTrackpad.Descriptor.SetTitle("Change By Trackpad");
-            toggleChangeByTrackpad.Descriptor.SetTooltip("Enable facial expression changes using the trackpad.");
-            toggleChangeByTrackpad.AssignBinding(ChangeByTrackpad);
-
-            PanelToggle toggleResetUponMoving = PanelToggle.CreateNewEntry(group);
-            toggleResetUponMoving.Descriptor.SetTitle("Reset Upon Moving");
-            toggleResetUponMoving.Descriptor.SetTooltip("Resets the facial expression when moving. This setting is primarily for Vive Controllers.");
-            toggleResetUponMoving.AssignBinding(ResetUponMoving);
-
-            PanelSlider sliderStopDistance = PanelSlider.CreateEntryAndBind(
-                group,
-                PanelSlider.SliderSettings.Distance("Stop Distance", 100),
-                StopDistance
-            );
-            sliderStopDistance.Descriptor.SetTooltip("The animation stops if the avatar is further away than this distance.");
-
-            return tab;
+                PanelSlider sliderStopDistance = PanelSlider.CreateEntryAndBind(
+                    container,
+                    PanelSlider.SliderSettings.Distance(BasisLocalization.Get("settings.jp.lilxyzw.emock.stopdistance"), 100),
+                    StopDistance
+                );
+                sliderStopDistance.Descriptor.SetTooltip(BasisLocalization.Get("settings.jp.lilxyzw.emock.stopdistance.tooltips"));
+            });
         }
 
         [RuntimeInitializeOnLoadMethod]
         private static void Initialize()
         {
-            SettingsProvider.ExternalTabs.Add(("Emock", EmockTab));
-            BasisSettingsSystem.OnSettingsFinishedChanges += LoadAll;
+            basispatcher.CommonSettings.addSettings += EmockTab;
+            basispatcher.CommonSettings.load += LoadAll;
         }
     }
 }
