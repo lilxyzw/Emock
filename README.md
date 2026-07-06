@@ -21,7 +21,9 @@ Except for EmockMenuItem, it is not recommended for users to configure this plug
 
 ## Install
 
-Running `Tools/lilBasisPatcher/Add Emock Components` makes the components available for use on the avatar.
+Please install [this plugin](https://github.com/lilxyzw/lilBasisPatcher) first. After that, running `Tools/lilBasisPatcher/Add Emock Components` makes the components available for use on the avatar.
+
+This plugin is also available via the [VPM repository](https://github.com/lilxyzw/vpm-repos-basis).
 
 ## Make Emock compatible with Cilbox
 
